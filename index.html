@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Scoped CSS Variables and JS</title>
+  </head>
+  <body>
+    <div class="controls">
+      <div class="item">
+        <label for="spacing">Border Radius:</label>
+        <input
+          id="radius"
+          type="range"
+          name="radius"
+          min="0"
+          max="200"
+          value="10"
+          data-sizing="%"
+        />
+      </div>
+      <div class="item">
+        <label for="spacing">Spacing:</label>
+        <input
+          id="spacing"
+          type="range"
+          name="spacing"
+          min="10"
+          max="200"
+          value="10"
+          data-sizing="px"
+        />
+      </div>
+      <div class="item">
+        <label for="width">Width:</label>
+        <input
+          id="width"
+          type="range"
+          name="width"
+          min="0"
+          max="1000"
+          value="700"
+          data-sizing="px"
+        />
+      </div>
+
+      <div class="item">
+        <label for="height">Height:</label>
+        <input
+          id="height"
+          type="range"
+          name="height"
+          min="0"
+          max="1000"
+          value="450"
+          data-sizing="px"
+        />
+      </div>
+
+      <div class="item">
+        <label for="base">Base Color</label>
+        <input id="base" type="color" name="base" value="#ffc600" />
+      </div>
+    </div>
+
+    <img
+      src="https://images.unsplash.com/photo-1528920304568-7aa06b3dda8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1502&q=80"
+    />
+    <style>
+      /*
+      misc styles, nothing to do with CSS variables
+    */
+      :root {
+        --base: #ffc600;
+        --spacing: 10px;
+        --blur: 0px;
+        --radius: 10%;
+        --height: 450px;
+        --width: 700px;
+      }
+
+      img {
+        padding: var(--spacing);
+        background: var(--base);
+        filter: blur(var(--blur));
+        border-radius: var(--radius);
+        height: var(--height);
+        width: var(--width);
+      }
+
+      .hl {
+        color: var(--base);
+      }
+      body {
+        text-align: center;
+        background: #140220;
+        color: white;
+        font-family: "helvetica neue", sans-serif;
+        font-weight: 100;
+        font-size: 20px;
+      }
+      .controls {
+        margin-bottom: 50px;
+        display: flex;
+        width: 90%;
+        margin: 30px;
+      }
+      input {
+        width: 120px;
+        margin-left: 10px;
+      }
+
+      .item {
+        margin-right: 100px;
+      }
+    </style>
+
+    <script>
+      const inputs = document.querySelectorAll(".controls input");
+      const borderValue = document.querySelector(".border-value");
+      const spacingValue = document.querySelector(".spacing-value");
+      const widthValue = document.querySelector(".width-value");
+      const heightValue = document.querySelector(".height-value");
+
+      function handleUpdate() {
+        //get the data-sizing element
+        const suffix = this.dataset.sizing || " ";
+        document.documentElement.style.setProperty(
+          `--${this.name}`,
+          this.value + suffix
+        );
+      }
+
+      inputs.forEach(input => input.addEventListener("change", handleUpdate));
+      inputs.forEach(input =>
+        input.addEventListener("mousemove", handleUpdate)
+      );
+    </script>
+  </body>
+</html>
